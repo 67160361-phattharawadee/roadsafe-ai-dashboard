@@ -51,3 +51,6 @@
 ### ขั้นตอนที่ 4: รันระบบแอปพลิเคชันแดชบอร์ด
 -   เริ่มต้นเปิดใช้งานเว็บแดชบอร์ดด้วยคำสั่ง:
     python -m streamlit run app.py
+
+
+https://roadsafe-ai-dashboard.streamlit.app/
