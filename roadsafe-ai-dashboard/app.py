@@ -57,7 +57,16 @@ except:
   df = pd.DataFrame(data)
 
 # Sidebar (แถบด้านข้าง: แสดงโลโก้, ข้อมูลโครงการ และตัวกรอง)
-st.sidebar.image("logo.png", width=160)
+# แสดงชื่อแบรนด์และโลโก้จำลองแบบ Text Design พรีเมียม (หมดปัญหาหาไฟล์ไม่เจอ)
+st.sidebar.markdown(
+    """
+    <div style="background: linear-gradient(135deg, #071A2B 0%, #147D78 100%); padding: 15px; border-radius: 10px; text-align: center; color: white; margin-bottom: 10px;">
+        <h2 style="margin: 0; font-size: 20px;">🛡️ RoadSafe AI</h2>
+        <p style="margin: 5px 0 0 0; font-size: 11px; opacity: 0.8;">Enterprise Fleet Safety</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 📌 ข้อมูลโครงการ")
 st.sidebar.markdown(
