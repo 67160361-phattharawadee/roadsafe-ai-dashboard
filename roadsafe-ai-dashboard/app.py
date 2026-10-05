@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import os
 
 # 1. ตั้งค่าหน้าเว็บให้เป็นแบบ Wide และกำหนด Title
 st.set_page_config(
@@ -40,21 +41,35 @@ st.markdown(
 # 3. โหลดข้อมูลจากไฟล์ CSV (รองรับข้อมูล 1,000 แถว)
 @st.cache_data
 def load_data():
-  return pd.read_csv("data/roadsafe_ai_data.csv")
+  # เช็คตำแหน่งไฟล์ว่าอยู่โฟลเดอร์ไหน
+  if os.path.exists("data/roadsafe_ai_data.csv"):
+    return pd.read_csv("data/roadsafe_ai_data.csv")
+  elif os.path.exists("roadsafe-ai-dashboard/data/roadsafe_ai_data.csv"):
+    return pd.read_csv("roadsafe-ai-dashboard/data/roadsafe_ai_data.csv")
+  else:
+    # ถ้าหาไม่เจอจริงๆ ให้สร้างข้อมูลจำลอง 1,000 แถวขึ้นมาสดๆ ตรงนี้เลย
+    import random
+
+    random.seed(42)
+    data = []
+    for i in range(1, 1001):
+      data.append({
+          "trip_id": f"T{i:04d}",
+          "vehicle_type": random.choice([
+              "Truck (Logistics)",
+              "Public Bus",
+              "Delivery Van",
+              "Personal Car",
+          ]),
+          "distance_km": random.randint(50, 700),
+          "fatigue_alerts": random.randint(0, 8),
+          "drowsiness_alerts": random.randint(0, 3),
+          "overall_safety_score": random.randint(60, 100),
+      })
+    return pd.DataFrame(data)
 
 
-try:
-  df = load_data()
-except:
-  data = {
-      "trip_id": ["T001", "T002"],
-      "vehicle_type": ["Truck (Logistics)", "Public Bus"],
-      "distance_km": [120, 45],
-      "fatigue_alerts": [2, 4],
-      "drowsiness_alerts": [1, 2],
-      "overall_safety_score": [85, 72],
-  }
-  df = pd.DataFrame(data)
+df = load_data()
 
 # Sidebar (แถบด้านข้าง: แสดงโลโก้, ข้อมูลโครงการ และตัวกรอง)
 # แสดงชื่อแบรนด์และโลโก้จำลองแบบ Text Design พรีเมียม (หมดปัญหาหาไฟล์ไม่เจอ)
